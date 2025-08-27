@@ -1,16 +1,28 @@
-# idea_flow
+# IdeaFlow
 
-A new Flutter project.
+**IdeaFlow** is an open-source infinite canvas tool for organizing ideas, projects, and documents.  
+Think of it as a free alternative to Milanote or Notion, designed for creatives, teams, and anyone who wants a flexible space for structured thinking.
 
-## Getting Started
+✨ Features:
+- 📝 Infinite boards — create as many canvases as you need
+- 🎨 Drag & drop cards for text, images, and notes
+- 🔗 Connect ideas visually with links
+- 💾 Local-first projects (no lock-in, your data is yours)
+- 🌐 Optional Git sync for backup and version control
+- 🖥 Runs on **Web** and **Desktop (Windows, Linux, macOS)** via Flutter
 
-This project is a starting point for a Flutter application.
+🚀 Perfect for:
+- Game design documents  
+- Worldbuilding & storytelling  
+- Project planning  
+- Creative brainstorming  
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Status
+⚠️ **Work in progress** — expect rapid changes as core features are being built.  
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+## License
+MIT License — free to use, modify, and share.
