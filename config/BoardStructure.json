@@ -1,0 +1,60 @@
+{
+  "id": "fdsfdsf",
+  "details": {
+    "name": "Test Project 1",
+    "description": "This is a test project created from the app",
+    "icon": "smiling_face",
+    "color": "#FF5733",
+    "parent": "fdsfds",
+    "children": ["fdsdfs"]
+  },
+  "notes": [
+    {
+      "id": "note_1",
+      "position": {
+        "x": 100,
+        "y": 150
+      },
+      "size": {
+        "width": 200,
+        "height": 100
+      },
+      "content": "This is a sample note."
+    }
+  ],
+  "columns": [
+    {
+      "id": "column_001",
+      "name": "To Do",
+      "position": {
+        "x": 800,
+        "y": 100
+      },
+      "size": {
+        "width": 250,
+        "height": 600
+      },
+      "style": {
+        "backgroundColor": "#f5f5f5",
+        "borderColor": "#e0e0e0",
+        "borderWidth": 1,
+        "borderRadius": 4
+      },
+      "noteIds": ["note_001", "note_002"]
+    }
+  ],
+  "images": [
+    {
+      "id": "image_1",
+      "path": "images/image_1.png",
+      "position": {
+        "x": 300,
+        "y": 200
+      },
+      "size": {
+        "width": 400,
+        "height": 300
+      }
+    }
+  ]
+}

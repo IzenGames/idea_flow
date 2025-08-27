@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ProjectPage extends StatefulWidget {
-  const ProjectPage({Key? key}) : super(key: key);
+  const ProjectPage({super.key});
 
   @override
   ProjectPageState createState() => ProjectPageState();

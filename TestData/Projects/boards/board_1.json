@@ -1,0 +1,66 @@
+{
+  "id": "board_1",
+  "details": {
+    "name": "Main Board",
+    "description": "Primary brainstorming space",
+    "icon": "smiling_face",
+    "color": "#3498db",
+    "parent": null,
+    "children": ["board_2", "board_3"]
+  },
+  "notes": [
+    {
+      "id": "note_1",
+      "position": {
+        "x": 100,
+        "y": 150
+      },
+      "size": {
+        "width": 200,
+        "height": 100
+      },
+      "content": "This is a sample note about game mechanics.",
+      "style": {
+        "backgroundColor": "#ffffff",
+        "borderColor": "#e0e0e0",
+        "borderWidth": 1,
+        "borderRadius": 8
+      }
+    }
+  ],
+  "columns": [
+    {
+      "id": "column_1",
+      "name": "To Do",
+      "position": {
+        "x": 800,
+        "y": 100
+      },
+      "size": {
+        "width": 250,
+        "height": 600
+      },
+      "style": {
+        "backgroundColor": "#f5f5f5",
+        "borderColor": "#e0e0e0",
+        "borderWidth": 1,
+        "borderRadius": 4
+      },
+      "noteIds": ["note_1"]
+    }
+  ],
+  "images": [
+    {
+      "id": "image_1",
+      "path": "assets/images/character_concept.png",
+      "position": {
+        "x": 300,
+        "y": 400
+      },
+      "size": {
+        "width": 400,
+        "height": 300
+      }
+    }
+  ]
+}

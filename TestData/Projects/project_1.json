@@ -1,0 +1,17 @@
+{
+  "id": "project_1",
+  "details": {
+    "dateCreated": "2025-08-27T21:08:33.712333",
+    "lastModified": "2025-08-27T21:08:33.712333",
+    "name": "Game Design Document",
+    "description": "Main project for our RPG game development",
+    "color": "#FF5733",
+    "thumbnail": "assets/thumbnails/project1.png"
+  },
+  "settings": {
+    "canvasBackground": "#FFFFFF",
+    "gridSize": 20,
+    "snapToGrid": true
+  },
+  "boards": ["board_1", "board_2", "board_3"]
+}

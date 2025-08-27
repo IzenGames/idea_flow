@@ -1,0 +1,5 @@
+production:
+  appFolder: "IdeaFlowProjects"
+
+testing:
+  appFolder: "IdeaFlowTesting"

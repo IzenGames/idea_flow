@@ -1,0 +1,15 @@
+{
+  "id": "fdsfdsf",
+  "details": {
+    "dateCreated": "2025-08-27T21:08:33.712333",
+    "lastModified": "2025-08-27T21:08:33.712333",
+    "name": "Test Project 1",
+    "description": "This is a test project created from the app",
+    "color": "#FF5733",
+    "thumbnail": "assets/thumbnails/project1.png"
+  },
+  "settings": {
+    "canvasBackground": "#FFFFFF"
+  },
+  "boards": ["board_1"]
+}
