@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:idea_flow/App/Models/project_model.dart';
+import 'package:idea_flow/App/Pages/test_page.dart';
 import 'package:idea_flow/App/controllers/project_controller.dart';
 
 class ProjectPage extends StatelessWidget {
@@ -13,7 +14,7 @@ class ProjectPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text("fds")),
-      body: Center(child: Text('Project details for $projectId')),
+      body: BoardView(),
     );
   }
 }

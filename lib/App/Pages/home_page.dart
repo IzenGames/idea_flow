@@ -95,8 +95,8 @@ class HomepageState extends State<Homepage> {
                           name: projectName,
                         );
                         await projectsController.addProject(newId);
+                        // Close dialog
                         Navigator.of(context).pop();
-                        openProjectPage(newProjectId);
                       }
                     },
                     child: const Text('Add'),
