@@ -51,7 +51,7 @@ class HomepageState extends State<Homepage> {
                     'Unknown';
                 return InkWell(
                   onTap: () {
-                    openProjectPage(projects[index]);
+                    openProjectPage(projects[index], projectName.toString());
                   },
                   child: Card(
                     color: Colors.grey[800],
@@ -119,12 +119,12 @@ class HomepageState extends State<Homepage> {
   }
 
   // open project page
-  void openProjectPage(String projectId) {
+  void openProjectPage(String projectId, String title) {
     // Navigate to the project page
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ProjectPage(projectId: projectId),
+        builder: (context) => ProjectPage(projectId: projectId, title: title),
       ),
     );
   }
