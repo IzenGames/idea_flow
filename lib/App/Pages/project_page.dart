@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:idea_flow/App/Models/project_model.dart';
+import 'package:idea_flow/App/Pages/Widgets/sidebar.dart';
 import 'package:idea_flow/App/Pages/test_page.dart';
 import 'package:idea_flow/App/controllers/project_controller.dart';
 
@@ -16,7 +17,14 @@ class ProjectPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(title)),
-      body: BoardView(),
+      body: Container(
+        child: Row(
+          children: [
+            // Sidebar(),
+            Expanded(child: BoardView()),
+          ],
+        ),
+      ),
     );
   }
 }

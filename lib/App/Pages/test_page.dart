@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:idea_flow/App/Pages/Widgets/draggable_base_widget.dart';
 import 'package:vector_math/vector_math_64.dart' as v;
 
 class BoardItem {
@@ -44,6 +45,7 @@ class BoardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.put(BoardController());
+    final draggableC = Get.put(DraggableController());
 
     return Scaffold(
       body: Listener(
