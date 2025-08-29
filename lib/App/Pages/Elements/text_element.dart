@@ -18,11 +18,16 @@ class _TextElementState extends State<TextElement> {
   void initState() {
     super.initState();
     _textController.text = widget.item.content ?? 'Double tap to edit';
+
+    widget.item.size = Size(300, 50);
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onSecondaryTap: () {
+        // TODO : Create drop box
+      },
       onDoubleTap: () {
         setState(() {
           _isEditing = true;

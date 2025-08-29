@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:idea_flow/App/Pages/Elements/image_element.dart';
 import 'package:idea_flow/App/Pages/Elements/text_element.dart';
 import 'package:idea_flow/App/Pages/Widgets/draggable_base_widget.dart';
 import 'package:idea_flow/App/Pages/Widgets/sidebar.dart';
@@ -49,7 +50,7 @@ class BoardView extends StatelessWidget {
     DraggableController draggableC,
     ElementType type,
   ) {
-    _addElement(context, draggableC, ElementType.text);
+    _addElement(context, draggableC, type);
   }
 
   @override
@@ -62,6 +63,8 @@ class BoardView extends StatelessWidget {
           Sidebar(
             onAddPressed: () =>
                 onAddElement(context, draggableC, ElementType.text),
+            onImagePressed: () =>
+                onAddElement(context, draggableC, ElementType.image),
           ),
           Expanded(
             child: Listener(
@@ -113,11 +116,7 @@ Widget _buildElementByType(DraggableItem item, DraggableController controller) {
       return TextElement(item: item, board: controller);
     case ElementType.image:
       // Return your ImageElement when you create it
-      return DraggableBaseWidget(
-        item: item,
-        board: controller,
-        child: const Icon(Icons.image, size: 40),
-      );
+      return ImageElement(item: item, board: controller);
     case ElementType.note:
       // Return your NoteElement when you create it
       return DraggableBaseWidget(

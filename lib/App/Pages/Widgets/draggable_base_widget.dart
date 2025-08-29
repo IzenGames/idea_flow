@@ -66,7 +66,7 @@ class DraggableItem {
 
   final String id;
   final Rx<Offset> position;
-  final Size size;
+  Size size;
   final ElementType type; // Use ElementType enum
   final String? content;
 }
@@ -77,11 +77,15 @@ class DraggableController extends GetxController {
 
   double get scale => transform.value.getMaxScaleOnAxis();
 
-  void addItem(Offset worldPos, {ElementType type = ElementType.text, String? content}) {
+  void addItem(
+    Offset worldPos, {
+    ElementType type = ElementType.text,
+    String? content,
+  }) {
     final id = DateTime.now().microsecondsSinceEpoch.toString();
     items[id] = DraggableItem(
-      id: id, 
-      pos: worldPos, 
+      id: id,
+      pos: worldPos,
       type: type,
       content: content,
     );
