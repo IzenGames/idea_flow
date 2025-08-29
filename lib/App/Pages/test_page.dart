@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:idea_flow/App/Pages/Elements/text_element.dart';
 import 'package:idea_flow/App/Pages/Widgets/draggable_base_widget.dart';
+import 'package:idea_flow/App/Pages/Widgets/sidebar.dart';
 import 'package:vector_math/vector_math_64.dart' as v;
 
 class BoardItem {
@@ -42,54 +44,114 @@ class BoardController extends GetxController {
 class BoardView extends StatelessWidget {
   const BoardView({super.key});
 
+  void onAddElement(
+    BuildContext context,
+    DraggableController draggableC,
+    ElementType type,
+  ) {
+    _addElement(context, draggableC, ElementType.text);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final c = Get.put(BoardController());
     final draggableC = Get.put(DraggableController());
 
     return Scaffold(
-      body: Listener(
-        // Optional: wheel-zoom around mouse cursor with Ctrl (desktop feel)
-        onPointerSignal: (signal) {
-          // Keep default InteractiveViewer controls first; add custom later if needed
-        },
-        child: InteractiveViewer(
-          transformationController: c.transform,
-          minScale: 0.25,
-          maxScale: 4,
-          boundaryMargin: const EdgeInsets.all(100000), // generous pan area
-          constrained: false, // allow unbounded child
-          child: SizedBox(
-            width: 200000,
-            height: 200000,
-            child: Obx(() {
-              return Stack(
-                clipBehavior: Clip.none,
-                children: c.items.values.map((item) {
-                  return Obx(() {
-                    final pos = item.position.value;
-                    return Positioned(
-                      left: pos.dx,
-                      top: pos.dy,
-                      child: _DraggableNote(item: item, board: c),
-                    );
-                  });
-                }).toList(),
-              );
-            }),
+      body: Row(
+        children: [
+          Sidebar(
+            onAddPressed: () =>
+                onAddElement(context, draggableC, ElementType.text),
           ),
-        ),
+          Expanded(
+            child: Listener(
+              onPointerSignal: (signal) {
+                // Handle wheel zoom if needed
+              },
+              child: InteractiveViewer(
+                transformationController: draggableC.transform,
+                minScale: 0.25,
+                maxScale: 4,
+                boundaryMargin: const EdgeInsets.all(100000),
+                constrained: false,
+                child: SizedBox(
+                  width: 200000,
+                  height: 200000,
+                  child: Obx(() {
+                    return Stack(
+                      clipBehavior: Clip.none,
+                      children: draggableC.items.values.map((item) {
+                        return Obx(() {
+                          final pos = item.position.value;
+                          return Positioned(
+                            left: pos.dx,
+                            top: pos.dy,
+                            child: _buildElementByType(item, draggableC),
+                          );
+                        });
+                      }).toList(),
+                    );
+                  }),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add a note at the current viewport center
-          final size = MediaQuery.of(context).size;
-          c.addItem(c.screenToWorld(Offset(size.width / 2, size.height / 2)));
-        },
-        child: const Icon(Icons.post_add),
+        onPressed: () => _addElement(context, draggableC, ElementType.text),
+        child: const Icon(Icons.add),
       ),
     );
   }
+}
+
+// Element factory method
+Widget _buildElementByType(DraggableItem item, DraggableController controller) {
+  switch (item.type) {
+    case ElementType.text:
+      return TextElement(item: item, board: controller);
+    case ElementType.image:
+      // Return your ImageElement when you create it
+      return DraggableBaseWidget(
+        item: item,
+        board: controller,
+        child: const Icon(Icons.image, size: 40),
+      );
+    case ElementType.note:
+      // Return your NoteElement when you create it
+      return DraggableBaseWidget(
+        item: item,
+        board: controller,
+        child: const Icon(Icons.note, size: 40),
+      );
+  }
+}
+
+void _addElement(
+  BuildContext context,
+  DraggableController controller,
+  ElementType type,
+) {
+  final size = MediaQuery.of(context).size;
+  final worldPos = controller.screenToWorld(
+    Offset(size.width / 2, size.height / 2),
+  );
+
+  String? content;
+  switch (type) {
+    case ElementType.text:
+      content = 'Double tap to edit';
+      break;
+    case ElementType.image:
+      content = 'https://via.placeholder.com/160x100';
+      break;
+    case ElementType.note:
+      content = 'New note';
+      break;
+  }
+
+  controller.addItem(worldPos, type: type, content: content);
 }
 
 class _DraggableNote extends StatefulWidget {

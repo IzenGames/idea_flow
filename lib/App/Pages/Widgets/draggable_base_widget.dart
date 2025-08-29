@@ -3,10 +3,15 @@ import 'package:get/get.dart';
 import 'package:vector_math/vector_math_64.dart' as v;
 
 class DraggableBaseWidget extends StatefulWidget {
-  const DraggableBaseWidget({required this.item, required this.board});
+  const DraggableBaseWidget({
+    required this.item,
+    required this.board,
+    required this.child,
+  });
 
   final DraggableItem item;
   final DraggableController board;
+  final Widget child;
 
   @override
   State<DraggableBaseWidget> createState() => _DraggableBaseWidgetState();
@@ -38,7 +43,11 @@ class _DraggableBaseWidgetState extends State<DraggableBaseWidget> {
             elevation: 4,
             borderRadius: BorderRadius.circular(8),
             color: Colors.blue[200],
-            child: SizedBox(width: item.size.width, height: item.size.height),
+            child: SizedBox(
+              width: item.size.width,
+              height: item.size.height,
+              child: widget.child,
+            ),
           ),
         ),
       ),
@@ -51,11 +60,15 @@ class DraggableItem {
     required this.id,
     required Offset pos,
     this.size = const Size(160, 100),
+    this.type = ElementType.text, // Use ElementType enum
+    this.content,
   }) : position = pos.obs;
 
   final String id;
   final Rx<Offset> position;
   final Size size;
+  final ElementType type; // Use ElementType enum
+  final String? content;
 }
 
 class DraggableController extends GetxController {
@@ -64,9 +77,14 @@ class DraggableController extends GetxController {
 
   double get scale => transform.value.getMaxScaleOnAxis();
 
-  void addItem(Offset worldPos) {
+  void addItem(Offset worldPos, {ElementType type = ElementType.text, String? content}) {
     final id = DateTime.now().microsecondsSinceEpoch.toString();
-    items[id] = DraggableItem(id: id, pos: worldPos);
+    items[id] = DraggableItem(
+      id: id, 
+      pos: worldPos, 
+      type: type,
+      content: content,
+    );
   }
 
   Offset screenToWorld(Offset screenPoint) {
@@ -75,4 +93,11 @@ class DraggableController extends GetxController {
     final r = inv.transform3(p);
     return Offset(r.x, r.y);
   }
+}
+
+enum ElementType {
+  text,
+  image,
+  note,
+  // Add more element types as you create them
 }
