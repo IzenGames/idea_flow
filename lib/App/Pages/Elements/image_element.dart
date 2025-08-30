@@ -7,13 +7,8 @@ class ImageElement extends StatelessWidget {
   final DraggableController board;
 
   @override
-  void initState() {
-    item.size = Size(600, 300);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    item.size = Size(500, 300);
+    item.elementSize.value = Size(500, 300);
 
     return DraggableBaseWidget(
       item: item,

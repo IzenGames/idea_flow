@@ -39,15 +39,34 @@ class _DraggableBaseWidgetState extends State<DraggableBaseWidget> {
           // onPanEnd: () {
           //   // TODO: persist new position (e.g., repository.save)
           // },
-          child: Material(
-            elevation: 4,
-            borderRadius: BorderRadius.circular(8),
-            color: Colors.blue[200],
-            child: SizedBox(
-              width: item.size.width,
-              height: item.size.height,
-              child: widget.child,
-            ),
+          child: Stack(
+            alignment: AlignmentGeometry.bottomRight,
+            children: [
+              Material(
+                elevation: 4,
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.blue[200],
+                child: Obx(() {
+                  return SizedBox(
+                    width: item.elementSize.value.width,
+                    height: item.elementSize.value.height,
+                    child: widget.child,
+                  );
+                }),
+              ),
+              MouseRegion(
+                cursor: SystemMouseCursors.resizeUpLeftDownRight,
+                child: GestureDetector(
+                  onPanStart: (details) {
+                    item.elementSize.value = Size(
+                      item.elementSize.value.width + 50,
+                      item.elementSize.value.height + 50,
+                    );
+                  },
+                  child: Icon(Icons.line_style_rounded),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -59,14 +78,16 @@ class DraggableItem {
   DraggableItem({
     required this.id,
     required Offset pos,
-    this.size = const Size(160, 100),
+    required Size size,
     this.type = ElementType.text, // Use ElementType enum
     this.content,
-  }) : position = pos.obs;
+  }) : position = pos.obs,
+       elementSize = size.obs;
 
   final String id;
   final Rx<Offset> position;
-  Size size;
+  // Size size;
+  final Rx<Size> elementSize;
   final ElementType type; // Use ElementType enum
   final String? content;
 }
@@ -86,6 +107,7 @@ class DraggableController extends GetxController {
     items[id] = DraggableItem(
       id: id,
       pos: worldPos,
+      size: Size(160, 100),
       type: type,
       content: content,
     );
@@ -99,9 +121,4 @@ class DraggableController extends GetxController {
   }
 }
 
-enum ElementType {
-  text,
-  image,
-  note,
-  // Add more element types as you create them
-}
+enum ElementType { text, image, note }

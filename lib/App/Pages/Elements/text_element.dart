@@ -19,7 +19,7 @@ class _TextElementState extends State<TextElement> {
     super.initState();
     _textController.text = widget.item.content ?? 'Double tap to edit';
 
-    widget.item.size = Size(300, 50);
+    widget.item.elementSize.value = Size(300, 50);
   }
 
   @override
