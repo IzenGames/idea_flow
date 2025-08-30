@@ -42,11 +42,7 @@ class _DraggableBaseWidgetState extends State<DraggableBaseWidget> {
           }
         },
         child: MouseRegion(
-          cursor: _isResizing
-              ? SystemMouseCursors.resizeUpLeftDownRight
-              : (_isDragging
-                    ? SystemMouseCursors.move
-                    : SystemMouseCursors.basic),
+          cursor: SystemMouseCursors.move,
           child: GestureDetector(
             onPanStart: (details) {
               setState(() {
@@ -131,17 +127,14 @@ class _DraggableBaseWidgetState extends State<DraggableBaseWidget> {
                           child: Container(
                             width: 24,
                             height: 24,
-                            decoration: BoxDecoration(
-                              color: Colors.blue[700],
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(4),
-                                bottomRight: Radius.circular(8),
+
+                            child: Transform.flip(
+                              flipY: true,
+                              child: Icon(
+                                Icons.open_in_full,
+                                size: 16,
+                                color: Colors.white,
                               ),
-                            ),
-                            child: Icon(
-                              Icons.open_in_full,
-                              size: 16,
-                              color: Colors.white,
                             ),
                           ),
                         ),
