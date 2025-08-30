@@ -19,60 +19,113 @@ class DraggableBaseWidget extends StatefulWidget {
 
 class _DraggableBaseWidgetState extends State<DraggableBaseWidget> {
   late Offset startPos;
+  late Size startSize;
+  bool _isResizing = false;
+
   @override
   Widget build(BuildContext context) {
     final item = widget.item;
     final c = widget.board;
 
-    return RepaintBoundary(
-      child: MouseRegion(
-        cursor: SystemMouseCursors.move,
-        child: GestureDetector(
-          onPanStart: (details) {
-            startPos = item.position.value;
-          },
-          onPanUpdate: (details) {
-            // Convert screen delta to world delta by dividing by zoom
-            final worldDelta = details.delta / c.scale;
-            item.position.value = item.position.value + worldDelta;
-          },
-          // onPanEnd: () {
-          //   // TODO: persist new position (e.g., repository.save)
-          // },
-          child: Stack(
-            alignment: AlignmentGeometry.bottomRight,
-            children: [
-              Material(
-                elevation: 4,
-                borderRadius: BorderRadius.circular(8),
-                color: Colors.blue[200],
-                child: Obx(() {
-                  return SizedBox(
-                    width: item.elementSize.value.width,
-                    height: item.elementSize.value.height,
-                    child: widget.child,
-                  );
-                }),
+    return Obx(() {
+      return Positioned(
+        left: item.position.value.dx,
+        top: item.position.value.dy,
+        child: RepaintBoundary(
+          child: MouseRegion(
+            cursor: _isResizing
+                ? SystemMouseCursors.resizeUpLeftDownRight
+                : SystemMouseCursors.move,
+            child: GestureDetector(
+              onPanStart: (details) {
+                startPos = item.position.value;
+              },
+              onPanUpdate: (details) {
+                if (_isResizing) return;
+
+                // Convert screen delta to world delta by dividing by zoom
+                final worldDelta = details.delta / c.scale;
+                item.position.value = item.position.value + worldDelta;
+              },
+              child: Stack(
+                children: [
+                  // Main content
+                  Material(
+                    elevation: 4,
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.blue[200],
+                    child: SizedBox(
+                      width: item.elementSize.value.width,
+                      height: item.elementSize.value.height,
+                      child: widget.child,
+                    ),
+                  ),
+
+                  // Resize handle
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.resizeUpLeftDownRight,
+                      child: GestureDetector(
+                        onPanStart: (details) {
+                          setState(() {
+                            _isResizing = true;
+                            startSize = item.elementSize.value;
+                            startPos = details.globalPosition;
+                          });
+                        },
+                        onPanUpdate: (details) {
+                          final delta =
+                              (details.globalPosition - startPos) / c.scale;
+
+                          // Convert to double explicitly
+                          final newWidth = (startSize.width + delta.dx)
+                              .clamp(50.0, 500.0)
+                              .toDouble();
+                          final newHeight = (startSize.height + delta.dy)
+                              .clamp(50.0, 500.0)
+                              .toDouble();
+
+                          item.elementSize.value = Size(newWidth, newHeight);
+                        },
+                        onPanEnd: (details) {
+                          setState(() {
+                            _isResizing = false;
+                          });
+                        },
+                        onPanCancel: () {
+                          setState(() {
+                            _isResizing = false;
+                          });
+                        },
+                        child: Container(
+                          width: 24,
+                          height: 24,
+
+                          child: Transform.flip(
+                            flipY: true,
+                            child: Icon(
+                              Icons.open_in_full,
+                              size: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              MouseRegion(
-                cursor: SystemMouseCursors.resizeUpLeftDownRight,
-                child: GestureDetector(
-                  onPanStart: (details) {
-                    item.elementSize.value = Size(
-                      item.elementSize.value.width + 50,
-                      item.elementSize.value.height + 50,
-                    );
-                  },
-                  child: Icon(Icons.line_style_rounded),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
+
+// The rest of your classes remain the same...
 
 class DraggableItem {
   DraggableItem({
