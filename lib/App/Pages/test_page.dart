@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:idea_flow/App/Pages/Elements/image_element.dart';
@@ -13,13 +14,16 @@ class BoardItem {
     this.size = const Size(160, 100),
     this.text = 'Note',
     required this.iseditingText,
-  }) : position = pos.obs;
+    bool pan = false,
+  }) : position = pos.obs,
+       canPan = pan.obs;
 
   final String id;
   final Rx<Offset> position; // world coords
   final Size size;
   String text;
   bool iseditingText;
+  final RxBool canPan;
 }
 
 class BoardController extends GetxController {
@@ -27,7 +31,7 @@ class BoardController extends GetxController {
   final transform = TransformationController();
 
   double get scale => transform.value.getMaxScaleOnAxis();
-
+  RxBool caPan = RxBool(false);
   void addItem(Offset worldPos) {
     final id = DateTime.now().microsecondsSinceEpoch.toString();
     items[id] = BoardItem(id: id, pos: worldPos, iseditingText: false);
@@ -56,7 +60,7 @@ class BoardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final draggableC = Get.put(DraggableController());
-
+    final boardC = Get.put(BoardController());
     return Scaffold(
       body: Row(
         children: [
@@ -71,17 +75,29 @@ class BoardView extends StatelessWidget {
               onPointerSignal: (signal) {
                 // Handle wheel zoom if needed
               },
-              child: InteractiveViewer(
-                transformationController: draggableC.transform,
-                minScale: 0.25,
-                maxScale: 4,
-                boundaryMargin: const EdgeInsets.all(100000),
-                constrained: false,
-                child: SizedBox(
-                  width: 200000,
-                  height: 200000,
-                  child: Obx(() {
-                    return Stack(
+              onPointerDown: (signal) {
+                // Handle wheel zoom if needed
+                print(signal.buttons);
+                if (signal.buttons == kMiddleMouseButton) {
+                  print("can pan");
+                  boardC.caPan.value = true;
+                } else {
+                  print("no");
+                  boardC.caPan.value = false;
+                }
+              },
+              child: Obx(() {
+                return InteractiveViewer(
+                  transformationController: draggableC.transform,
+                  minScale: 0.25,
+                  maxScale: 4,
+                  boundaryMargin: const EdgeInsets.all(100000),
+                  constrained: false,
+                  panEnabled: boardC.caPan.value,
+                  child: SizedBox(
+                    width: 200000,
+                    height: 200000,
+                    child: Stack(
                       clipBehavior: Clip.none,
                       children: draggableC.items.values.map((item) {
                         return Obx(() {
@@ -93,10 +109,10 @@ class BoardView extends StatelessWidget {
                           );
                         });
                       }).toList(),
-                    );
-                  }),
-                ),
-              ),
+                    ),
+                  ),
+                );
+              }),
             ),
           ),
         ],
