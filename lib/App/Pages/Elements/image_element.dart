@@ -8,7 +8,7 @@ class ImageElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    item.elementSize.value = Size(500, 300);
+    // item.elementSize.value = Size(500, 300);
 
     return DraggableBaseWidget(
       item: item,
